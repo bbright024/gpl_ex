@@ -1,0 +1,21 @@
+/*package github
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strings"
+	"io"
+)
+
+func WriteIssue(issue []Issue, repo string, user string, body Reader) {
+	req, err := http.NewRequest("POST", IssuesURL+"?q="+q, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set(
+		"Accept", "application/vnd.github.v3.text-match+json")
+	resp, err := http.DefaultClient.Do(req)
+}
+*/
