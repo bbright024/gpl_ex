@@ -13,6 +13,7 @@ import (
 	"time"
 	"github.com/bbright024/gopl_ex/ch4/github"
 	"flag"
+	"strings"
 )
 
 var n = flag.Int("n", 0, "ticket number")
@@ -25,13 +26,30 @@ var s = flag.Bool("s", false, "search terms (-s='hello world')")
 //var i = flag.Bool("i", false, "name of issue")
 //var w = flag.Boool("w", false, "writing an issue")
 var o = flag.String("o", "", "owner of repo" )
+var c = flag.Bool("c", false, "create a new issue")
+var t = flag.String("t", "", "title for new issue")
+//func edit_issue(issue *github.Issue) {
+	
+//}
 
-func get_issue(owner, repo string, number int) {
+func create_issue(owner, repo, title, body, user string) {
+//	user2 := []string{user}
+	result, err := github.CreateIssue(owner, repo, title, body, user)
+	if err != nil {
+		fmt.Println("create issue error")
+//		fmt.Error("Create push failed")
+		log.Fatal(err)
+	}
+	github.PrintIssue(result, false)
+}
+
+func get_issue(owner, repo string, number int) *github.Issue {
 	result, err := github.GetIssue(owner, repo, number)
 	if err != nil {
 		log.Fatal(err)
 	}
-	github.PrintIssue(result, true)
+
+	return result
 }
 
 
@@ -41,7 +59,12 @@ func main() {
 		query := flag.Args()
 		search(query)
 	} else if *g {
-		get_issue(*o, *r, *n)
+		issue := get_issue(*o, *r, *n)
+		github.PrintIssue(issue, true)
+	} else if *c {
+		fmt.Println("calling create_issue")
+		body := flag.Args()
+		create_issue(*o, *r, *t, strings.Join(body, " "), *u)
 	}
 
 }
